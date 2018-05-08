@@ -11,9 +11,25 @@ namespace LabPOO
     {
         public static List<Product> cart;
         public static List<Product> market;
+        public static List<Product> Receta;
 
         static void Main(string[] args)
         {
+            Receta = new List<Product>();
+            Receta.Add(new Product("Láminas de Lasaña", 1250, 1, "400g"));
+            Receta.Add(new Product("Queso Rallado Parmesano", 499, 2, "40g"));
+            Receta.Add(new Product("Mantequilla", 850, 1, "125g"));
+            Receta.Add(new Product("Carne Molida", 4390, 1, "500g"));
+            Receta.Add(new Product("Vino Blanco Caja", 2790, 1, "2L"));
+            Receta.Add(new Product("Tomates Pelados en lata", 700, 1, "540g"));
+            Receta.Add(new Product("Bolsa de Zanahorias", 890, 1, "1un"));
+            Receta.Add(new Product("Malla de Cebollas", 1090, 1, "1kg"));
+            Receta.Add(new Product("Aceite de Oliva", 1790, 1, "250g"));
+            Receta.Add(new Product("Sal Lobos", 330, 1, "1kg"));
+            Receta.Add(new Product("Pimienta", 430, 1, "15g"));
+            Receta.Add(new Product("Harina", 890, 1, "1kg"));
+            Receta.Add(new Product("Leche Entera", 820, 1, "1L"));
+
             cart = new List<Product>();
             market = new List<Product>();
             SupplyStore();
@@ -92,8 +108,27 @@ namespace LabPOO
                     {
                         continue;
                     }
-                    AddToCart(market[answer]);
-                    break;
+                    else
+                    {
+                        int Verificacion = HermanaMayor(market[answer].Name);
+                        if (Verificacion==1)
+                        {
+                            Console.WriteLine("\tYa tenemos suficiente de ese producto sera mejor que sigamos por los demas");
+                            continue;
+                        }
+                        if (Verificacion==2)
+                        {
+                            Console.WriteLine("\tBien otro menos en la lista");
+                            AddToCart(market[answer]);
+                            break;
+                        }
+                        if (Verificacion == 3)
+                        {
+                            Console.WriteLine("\tCreo que eso no esta en la lista hermanito");
+                            continue;
+                        }
+                    }
+                    
                 }
                 catch
                 {
@@ -125,7 +160,7 @@ namespace LabPOO
 
         public static void PrintHeader()
         {
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("\t\t LIDER\n");
         }
 
@@ -190,6 +225,33 @@ namespace LabPOO
             {
                 response = Console.ReadKey(true);
             }
+        }
+
+        public static int HermanaMayor(string Nameproduct)
+        {
+            for (int a = 0; a < Receta.Count(); a++)
+            {
+                int contador = 0;
+                if (Nameproduct == Receta[a].Name)
+                {
+                    for (int n = 0; n < cart.Count(); n++)
+                    {
+                        if (Receta[a].Name==cart[n].Name)
+                        {
+                            contador = contador + 1;
+                        }
+                    }
+                    if (contador==Receta[a].Stock)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 2;
+                    }
+                }
+            }
+            return 3;
         }
     }
 }
